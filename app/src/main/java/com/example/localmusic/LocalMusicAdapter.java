@@ -17,8 +17,14 @@ public class LocalMusicAdapter
   Context context;
   List<LocalMusicBean> mDatas;
 
+  OnItemClickListener onItemClickListener;
+
   public interface OnItemClickListener {
     public void onItemClick(View view, int position);
+  }
+
+  public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    this.onItemClickListener = onItemClickListener;
   }
 
   public LocalMusicAdapter(Context context, List<LocalMusicBean> mDatas) {
@@ -45,9 +51,10 @@ public class LocalMusicAdapter
 
     holder.itemView.setOnClickListener(
         new View.OnClickListener() {
-
           @Override
-          public void onClick(View view) {}
+          public void onClick(View view) {
+            onItemClickListener.onItemClick(view, position);
+          }
         });
   }
 
