@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     adapter = new LocalMusicAdapter(this, mDatas);
     musicRv.setAdapter(adapter);
 
-    musicMode = MODE_LOOP;
+    musicMode = MODE_RANDOM;
+    currentPlayPosition = 0;
 
     // 设置布局管理器
     LinearLayoutManager linearLayoutManager =
@@ -244,7 +245,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (currentPlayPosition == 0) {
           currentPlayPosition = mDatas.size() - 1;
-        } else {
+        }
+        {
           currentPlayPosition = currentPlayPosition - 1;
         }
         LocalMusicBean lastBean = mDatas.get(currentPlayPosition);
