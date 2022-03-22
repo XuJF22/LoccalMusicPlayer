@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,9 +29,10 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-  ImageView nextIv, playIv, lastIv, modeIv;
+  ImageView nextIv, playIv, lastIv, modeIv, iconIv;
   TextView singerTv, songTv;
   RecyclerView musicRv;
+  RelativeLayout relativeLayout;
 
   List<LocalMusicBean> mDatas;
   private LocalMusicAdapter adapter;
@@ -216,19 +218,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     lastIv = findViewById(R.id.local_music_bottom_iv_last);
     modeIv = findViewById(R.id.local_music_bottom_iv_mode);
     songTv = findViewById(R.id.local_music_bottom_tv_song);
+    iconIv = findViewById(R.id.local_music_bottom_iv_icon);
     singerTv = findViewById(R.id.local_music_bottom_tv_singer);
     musicRv = findViewById(R.id.local_music_rv);
+    relativeLayout = findViewById(R.id.main_layout);
 
     nextIv.setOnClickListener(this);
     playIv.setOnClickListener(this);
     lastIv.setOnClickListener(this);
     modeIv.setOnClickListener(this);
+    iconIv.setOnClickListener(this);
   }
 
   @Override
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.local_music_bottom_iv_last:
+        if (musicMode == MODE_RANDOM) {
+          stopMusic();
+          Random random = new Random();
+          int randomNumber = random.nextInt(mDatas.size() - 1);
+          currentPlayPosition = randomNumber;
+          playMusicInMusicBean(mDatas.get(currentPlayPosition));
+          return;
+        }
         if (currentPlayPosition == 0) {
           currentPlayPosition = mDatas.size() - 1;
         } else {
@@ -238,6 +251,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         playMusicInMusicBean(lastBean);
         break;
       case R.id.local_music_bottom_iv_next:
+        if (musicMode == MODE_RANDOM) {
+          stopMusic();
+          Random random = new Random();
+          int randomNumber = random.nextInt(mDatas.size() - 1);
+          currentPlayPosition = randomNumber;
+          playMusicInMusicBean(mDatas.get(currentPlayPosition));
+          return;
+        }
         nextMusic();
         break;
       case R.id.local_music_bottom_iv_play:
@@ -262,6 +283,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
           modeIv.setImageResource(R.mipmap.loop);
           musicMode = MODE_LOOP;
         }
+        break;
+      case R.id.local_music_bottom_iv_icon:
+        int[] backgroundMap = {
+          R.mipmap.bg0,
+          R.mipmap.bg1,
+          R.mipmap.bg2,
+          R.mipmap.bg3,
+          R.mipmap.bg4,
+          R.mipmap.bg5,
+          R.mipmap.bg6,
+          R.mipmap.bg7,
+          R.mipmap.bg8,
+          R.mipmap.bg9,
+          R.mipmap.bg10,
+          R.mipmap.bg11,
+          R.mipmap.bg12,
+          R.mipmap.bg13,
+          R.mipmap.bg14,
+          R.mipmap.bg15,
+        };
+        Random random = new Random();
+        int randomPic = random.nextInt(15);
+        relativeLayout.setBackground(getResources().getDrawable(backgroundMap[randomPic]));
         break;
       default:
     }
